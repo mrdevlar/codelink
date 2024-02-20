@@ -17,4 +17,7 @@ def main():
     # Process the specified file only
     codes = get_code([Path(args.filepath)])  
     md = to_markdown(codes, Path(args.filepath).parent) 
-    copy_to_clipboard(md) 
+    copy_to_clipboard(md)
+
+if __name__ == '__main__':
+    main()
