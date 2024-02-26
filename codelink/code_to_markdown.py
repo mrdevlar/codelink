@@ -1,8 +1,8 @@
-import argparse  # For handling command line arguments.
-from pathlib import Path  # Importing the pathlib module.
-from pygments.lexers import guess_lexer  # Used to determine programming language from file content.
-import pyperclip as pc  # For interacting with clipboard.
-from typing import AnyStr  # Type hints for Python's built-in types
+from pathlib import Path
+from pygments.lexers import guess_lexer # Determine language
+from pygments.util import ClassNotFound
+import pyperclip as pc  # Clipboard Interaction
+from typing import AnyStr
 
 
 def get_filepaths(directory: Path, allowed_file_types: list[str]) -> list[Path]:
@@ -56,8 +56,8 @@ def guess_language(content: str) -> str:
     """Return a string describing the programming language present in the content."""
     try:
         return guess_lexer(content).name # noqa
-    except Exception as e:
-        print(f"Error guessing language for file: {e}")
+    except ClassNotFound as fn:
+        print(f"Error guessing language for file: {fn}")
         return ''
 
 
