@@ -7,12 +7,15 @@ from typing import AnyStr  # Type hints for Python's built-in types
 
 def get_filepaths(directory: Path, allowed_file_types: list[str]) -> list[Path]:
     """Return a list of file paths in the given directory that are not directories or special files, have one of the allowed extensions."""
-     # Initialize an empty list to store the file paths.
     files = []
 
-    for file in directory.rglob('*'): 
-        if is_not_directory(file) and is_not_namespace(str(file)) and has_allowed_extension(file, allowed_file_types):
-            # If all conditions are met, append the file path to our list of files.
+    for file in directory.rglob('*'):
+        is_file = is_not_directory(file)
+        not_namespace = is_not_namespace(file)
+        allowed_extension = has_allowed_extension(file, allowed_file_types)
+        not_ignored_folder = is_not_ignored_folder(file)
+
+        if is_file and not_namespace and allowed_extension and not_ignored_folder:
             files.append(file)
 
     return files
@@ -23,14 +26,14 @@ def is_not_directory(file: Path) -> bool:
     return file.is_file()
 
 
-def is_not_namespace(filename: str) -> bool: 
+def is_not_namespace(file: Path) -> bool: 
     """Check if the filename is a namespace file like __init__.py"""
-    return not filename.startswith("__")
+    return not file.name.startswith("__")
 
 
-def is_not_ignored_folder(filename: str) -> bool:
+def is_not_ignored_folder(file: Path) -> bool:
     """Check if folder is not to be included, currently only .venv"""
-    return ".venv" not in filename
+    return not any(path in str(file) for path in [".venv", ".git"])
 
 
 def has_allowed_extension(file: Path, allowed_file_types: list[str]) -> bool: 
