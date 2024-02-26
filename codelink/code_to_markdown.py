@@ -10,30 +10,30 @@ def get_filepaths(directory: Path, allowed_file_types: list[str]) -> list[Path]:
     files = []
 
     for file in directory.rglob('*'):
-        is_file = is_not_directory(file)
-        not_namespace = is_not_namespace(file)
+        is_file = not is_directory(file)
+        not_namespace = not is_namespace_file(file)
         allowed_extension = has_allowed_extension(file, allowed_file_types)
-        not_ignored_folder = is_not_ignored_folder(file)
+        ignored_folders = not has_ignored_folder(file)
 
-        if is_file and not_namespace and allowed_extension and not_ignored_folder:
+        if is_file and not_namespace and allowed_extension and ignored_folders:
             files.append(file)
 
     return files
 
 
-def is_not_directory(file: Path) -> bool: 
+def is_directory(file: Path) -> bool: 
     """Check if a given file is not a directory."""
-    return file.is_file()
+    return not file.is_file()
 
 
-def is_not_namespace(file: Path) -> bool: 
+def is_namespace_file(file: Path) -> bool: 
     """Check if the filename is a namespace file like __init__.py"""
-    return not file.name.startswith("__")
+    return file.name.startswith("__")
 
 
-def is_not_ignored_folder(file: Path) -> bool:
+def has_ignored_folder(file: Path) -> bool:
     """Check if folder is not to be included, currently only .venv"""
-    return not any(path in str(file) for path in [".venv", ".git"])
+    return any(path in str(file) for path in [".venv", ".git"])
 
 
 def has_allowed_extension(file: Path, allowed_file_types: list[str]) -> bool: 
