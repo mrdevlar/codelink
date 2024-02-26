@@ -6,10 +6,18 @@ from typing import AnyStr  # Type hints for Python's built-in types
 
 
 def get_filepaths(directory: Path, allowed_file_types: list[str]) -> list[Path]:
+    """Return a list of file paths in the given directory that are not directories or special files, have one of the allowed extensions."""
     files = []
+
+    # Iterate over all files and subdirectories recursively within the provided directory. 
     for file in directory.rglob('*'):
-        if not (file.is_dir() or ".venv" in str(file) or str(file.name).startswith("__")) and any(extension in allowed_file_types for extension in file.suffixes):
+        # Check if it is a regular file (not a directory), not a part of .venv, and does not start with "__".
+        # Also check that at least one of its extensions are in allowed_file_types. 
+        if (file.is_file() and ".venv" not in str(file) and not str(file.name).startswith("__")
+            and any(extension in allowed_file_types for extension in file.suffixes)):
+             # If all conditions are met, append the file path to our list of files.
             files.append(file)
+
     return files
 
 
