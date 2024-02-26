@@ -7,18 +7,35 @@ from typing import AnyStr  # Type hints for Python's built-in types
 
 def get_filepaths(directory: Path, allowed_file_types: list[str]) -> list[Path]:
     """Return a list of file paths in the given directory that are not directories or special files, have one of the allowed extensions."""
+     # Initialize an empty list to store the file paths.
     files = []
 
-    # Iterate over all files and subdirectories recursively within the provided directory. 
-    for file in directory.rglob('*'):
-        # Check if it is a regular file (not a directory), not a part of .venv, and does not start with "__".
-        # Also check that at least one of its extensions are in allowed_file_types. 
-        if (file.is_file() and ".venv" not in str(file) and not str(file.name).startswith("__")
-            and any(extension in allowed_file_types for extension in file.suffixes)):
-             # If all conditions are met, append the file path to our list of files.
+    for file in directory.rglob('*'): 
+        if is_not_directory(file) and is_not_namespace(str(file)) and has_allowed_extension(file, allowed_file_types):
+            # If all conditions are met, append the file path to our list of files.
             files.append(file)
 
     return files
+
+
+def is_not_directory(file: Path) -> bool: 
+    """Check if a given file is not a directory."""
+    return file.is_file()
+
+
+def is_not_namespace(filename: str) -> bool: 
+    """Check if the filename is a namespace file like __init__.py"""
+    return not filename.startswith("__")
+
+
+def is_not_ignored_folder(filename: str) -> bool:
+    """Check if folder is not to be included, currently only .venv"""
+    return ".venv" not in filename
+
+
+def has_allowed_extension(file: Path, allowed_file_types: list[str]) -> bool: 
+    """Check if the file's extension is one of the allowed ones."""
+    return any(extension in allowed_file_types for extension in file.suffixes)
 
 
 def get_code(files: list[Path]) -> dict[str, str]:
