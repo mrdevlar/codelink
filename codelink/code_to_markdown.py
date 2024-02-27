@@ -33,6 +33,7 @@ def is_namespace_file(file: Path) -> bool:
 
 def has_ignored_folder(file: Path) -> bool:
     """Check if folder is not to be included, currently only .venv"""
+    # @TODO: Add dynamic ignored folders
     return any(path in str(file) for path in [".venv", ".git"])
 
 
@@ -43,6 +44,7 @@ def has_allowed_extension(file: Path, allowed_file_types: list[str]) -> bool:
 
 def get_code(files: list[Path]) -> dict[str, str]:
     """Return a dictionary of file paths and their corresponding code snippets."""
+    # @TODO: Stream read
     return {str(path): path.read_text(errors='replace') for path in files}
 
 
