@@ -1,12 +1,14 @@
+import re
 from pathlib import Path
-from pygments.lexers import guess_lexer # Determine language
+from pygments.lexers import guess_lexer  # Determine language
 from pygments.util import ClassNotFound
 import pyperclip as pc  # Clipboard Interaction
 from typing import AnyStr
 
 
 def get_filepaths(directory: Path, allowed_file_types: list[str]) -> list[Path]:
-    """Return a list of file paths in the given directory that are not directories or special files, have one of the allowed extensions."""
+    """Return a list of file paths in the given directory that are not directories or special files,
+    have one of the allowed extensions."""
     files = []
 
     for file in directory.rglob('*'):
@@ -21,23 +23,27 @@ def get_filepaths(directory: Path, allowed_file_types: list[str]) -> list[Path]:
     return files
 
 
-def is_directory(file: Path) -> bool: 
+def is_directory(file: Path) -> bool:
     """Check if a given file is not a directory."""
     return not file.is_file()
 
 
-def is_namespace_file(file: Path) -> bool: 
+def is_namespace_file(file: Path) -> bool:
     """Check if the filename is a namespace file like __init__.py"""
     return file.name.startswith("__")
 
 
-def has_ignored_folder(file: Path) -> bool:
+def has_ignored_folder(file: Path, excluded_paths: list[str] = None) -> bool:
     """Check if folder is not to be included, currently only .venv"""
-    # @TODO: Add dynamic ignored folders
-    return any(path in str(file) for path in [".venv", ".git"])
+    if not excluded_paths:  # Default value for the list of ignored paths
+        excluded_paths = [r"\.venv", r"\.git"]  # Regex patterns for '.venv' and '.git' directories
+
+    filepath_str = str(file)  # Convert the Path object to a string
+    # Check if any of the regex patterns match the path string
+    return any(re.search(pattern, filepath_str) for pattern in excluded_paths)
 
 
-def has_allowed_extension(file: Path, allowed_file_types: list[str]) -> bool: 
+def has_allowed_extension(file: Path, allowed_file_types: list[str]) -> bool:
     """Check if the file's extension is one of the allowed ones."""
     return any(extension in allowed_file_types for extension in file.suffixes)
 
@@ -51,13 +57,14 @@ def get_code(files: list[Path]) -> dict[str, str]:
 def to_markdown(codes: dict[str, str], directory: Path) -> AnyStr:
     """Return a markdown string of code snippets from the given dictionary."""
     return '\n\n'.join(
-        [f"{str(Path(file).relative_to(directory))}\n```{guess_language(code)}\n{code}\n```" for file, code in codes.items()])
+        [f"{str(Path(file).relative_to(directory))}\n```{guess_language(code)}\n{code}\n```" for file,
+            code in codes.items()])
 
 
 def guess_language(content: str) -> str:
     """Return a string describing the programming language present in the content."""
     try:
-        return guess_lexer(content).name # noqa
+        return guess_lexer(content).name  # noqa
     except ClassNotFound as fn:
         print(f"Error guessing language for file: {fn}")
         return ''
