@@ -1,14 +1,18 @@
+# Converts all the files in folder path and its subfolders to markdown
 import argparse
 from pathlib import Path
 from code_to_markdown import get_filepaths, get_code, to_markdown, copy_to_clipboard
 
+
 def parse_args():
     parser = argparse.ArgumentParser(
         prog="Code Path to Markdown",
-    ) 
-    parser.add_argument('-d', '--directory', default=Path.cwd(), help="The path to the directory where files are located.")
-    parser.add_argument('-a', '--allowedtypes', nargs='+', default=[".py"], help="The allowed filetypes to include")
-    args = parser.parse_args() 
+    )
+    parser.add_argument('-d', '--directory', default=Path.cwd(),
+                        help="The path to the directory where files are located.")
+    parser.add_argument('-a', '--allowedtypes', nargs='+', default=[".py"],
+                        help="The allowed filetypes to include")
+    args = parser.parse_args()
     return args
 
 
