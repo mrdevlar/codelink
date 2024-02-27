@@ -6,7 +6,8 @@ from code_to_markdown import get_filepaths, get_code, to_markdown, copy_to_clipb
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        prog="Code Path to Markdown",
+        prog="codelink_path",
+        description="Converts a path to markdown code for an LLM to ingest",
     )
     parser.add_argument('-d', '--directory', default=Path.cwd(),
                         help="The path to the directory where files are located.")

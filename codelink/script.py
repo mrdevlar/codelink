@@ -6,7 +6,8 @@ from code_to_markdown import get_code, to_markdown, copy_to_clipboard
 
 def parse_args():
     parser = argparse.ArgumentParser(
-        prog="Code file to Markdown"
+        prog="codelink_script",
+        description="Converts an individual script file to markdown"
     )
     parser.add_argument('-f', '--filepath', required=True, help="The path to a specific file")
     args = parser.parse_args()
