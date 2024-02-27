@@ -1,4 +1,6 @@
 poetry.lock
+.venv
+.idea
 
 # Byte-compiled / optimized / DLL files 
 __pycache__/
