@@ -19,7 +19,6 @@ def parse_args():
 
 def main():
     args = parse_args()
-    # ignore_dirs = [Path(d) for d in IGNORE_DIRS] # Convert directories to Path objects
     file_paths = get_filepaths(directory=Path(args.directory), allowed_file_types=args.allowedtypes)
     codes = get_code(file_paths)
     md = to_markdown(codes, Path(args.directory))
