@@ -5,7 +5,7 @@ from pathlib import Path
 
 def test_get_filepaths():
     """
-    Tests get_filepaths behavior. Ensures that 
+    Integration Test for composite get_filepath function
     """
     with TemporaryDirectory() as tmpdir:
         print('created temporary directory', tmpdir)
