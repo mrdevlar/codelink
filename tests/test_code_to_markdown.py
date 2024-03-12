@@ -44,3 +44,4 @@ def test_is_directory():
         a_sub_file.touch()
         assert is_directory(a_sub_file) is False, f"{a_sub_file} is incorrectly classified as a directory"
 
+
