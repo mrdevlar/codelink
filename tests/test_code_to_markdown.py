@@ -1,4 +1,4 @@
-from codelink.code_to_markdown import get_filepaths, is_directory
+from codelink.codelink import get_filepaths, is_directory
 from tempfile import TemporaryDirectory
 from pathlib import Path
 

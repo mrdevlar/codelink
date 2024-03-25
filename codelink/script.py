@@ -1,7 +1,7 @@
 # Converts an individual script file to markdown
 import argparse
 from pathlib import Path
-from code_to_markdown import get_code, to_markdown, copy_to_clipboard
+from codelink import get_code, to_markdown, copy_to_clipboard
 
 
 def parse_args():
