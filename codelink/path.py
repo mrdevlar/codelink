@@ -1,7 +1,7 @@
 # Converts all the files in folder path and its subfolders to markdown
 import argparse
 from pathlib import Path
-from codelink import get_filepaths, get_code, to_markdown, copy_to_clipboard
+from codelink.codelink import get_filepaths, get_code, to_markdown, copy_to_clipboard
 
 
 def parse_args():
