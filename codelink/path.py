@@ -23,6 +23,7 @@ def main():
     codes = get_code(file_paths)
     md = to_markdown(codes, Path(args.directory))
     copy_to_clipboard(md)
+    print("Copied to Clipboard!")
 
 
 if __name__ == '__main__':
