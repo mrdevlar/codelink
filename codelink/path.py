@@ -9,7 +9,7 @@ def parse_args():
         prog="codelink_path",
         description="Converts a path to markdown code for an LLM to ingest",
     )
-    parser.add_argument('-d', '--directory', default=Path.cwd(),
+    parser.add_argument('-d', '--directory', default=".",
                         help="The path to the directory where files are located.")
     parser.add_argument('-a', '--allowedtypes', nargs='+', default=[".py"],
                         help="The allowed filetypes to include")
@@ -23,7 +23,7 @@ def main():
     codes = get_code(file_paths)
     md = to_markdown(codes, Path(args.directory))
     copy_to_clipboard(md)
-    print("Copied to Clipboard!")
+    print(f"Copied '{Path(args.directory).resolve()}' to Clipboard!")
 
 
 if __name__ == '__main__':
